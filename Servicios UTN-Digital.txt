@@ -1,0 +1,12 @@
+Diario UTN Digital
+
+GET /home
+POST /users/registro/
+POST /users/login/
+GET /users/registro/
+GET /users/login/
+GET /noticias/policiales/
+GET /noticias/deportes/
+GET /noticias/politica/
+
+
