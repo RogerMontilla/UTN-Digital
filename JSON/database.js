@@ -1,5 +1,6 @@
 var fs = require('fs');
 var database={};
+
 var fileDeportes = 'JSON/deportes.json';
 fs.readFile(fileDeportes, (error, data) => {
   if (error) {
