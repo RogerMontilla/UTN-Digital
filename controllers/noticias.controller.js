@@ -1,30 +1,27 @@
-var {getPoliciales, getDeportes, getPolitica, getAll, createNoticia} = require('../models/noticias.model')
-var noticiasCtrl = {}
+var noticiasModel = require('../models/noticias.model');
+var noticiasCtrl = {};
+var moment = require('moment');
+moment.locale('es'); // change the global locale to Spanish
 
-noticiasCtrl.policiales = async function (req, res, next) {
-    let notPol = await getPoliciales();
-    res.status(200).json(notPol);
-}
+noticiasCtrl.getByCat = async function (req, res, next) {
+  let noticiaByCat = await noticiasModel.find({ categoria: req.params.categoria });
+  res.status(200).json(noticiaByCat);
+};
 
-noticiasCtrl.deportes = async function (req, res, next) {
-    let notDep = await getDeportes();
-    res.status(200).json(notDep);
-}
-
-noticiasCtrl.politica = async function (req, res, next) {
-    let notPolit = await getPolitica();
-    res.status(200).json(notPolit);
-}
-
-noticiasCtrl.createNews = async function (req, res, next){
-    await createNoticia(req.body);
-    res.status(200).json({'status': 'New News Was Successfully Created'})
-}
+noticiasCtrl.createNews = async function (req, res, next) {
+  let noticiaNew = new noticiasModel({
+    titulo: req.body.name,
+    descripcion: req.body.descripcion,
+    fecha: moment().format('lll'),
+    categoria: req.body.categoria,
+  });
+  let data = await noticiaNew.save();
+  res.status(200).json({ status: 'New News Was Successfully Created', data:data });
+};
 
 noticiasCtrl.getAllNews = async function (req, res, next) {
-    let allNews = await getAll();
-    res.status(200).json(allNews);
-}
-
+  let allNews = await noticiasModel.find({});
+  res.status(200).json(allNews);
+};
 
 module.exports = noticiasCtrl;

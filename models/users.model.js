@@ -1,19 +1,11 @@
-var db = require('../bin/mysql');
+const mongoose = require('../bin/mongoose');
+const Schema = mongoose.Schema;
 
-var usrModel = {};
+const userSchema = new Schema({
+  name: String,
+  email: String,
+  password: String,
+});
 
-usrModel.createUser = async (data) => {
-  await db.pool.query('INSERT INTO usuarios SET email = ?, clave = ?, nombre = ?, apellido = ?', [
-    data.email,
-    data.clave,
-    data.nombre,
-    data.apellido,
-  ]);
-};
+module.exports = mongoose.model('users', userSchema);
 
-usrModel.loginUser = async (data) => {
-  const [rows, fields] = await db.pool.execute(`SELECT * FROM usuarios WHERE nombre = '${data}'`);
-  return rows;
-};
-
-module.exports = usrModel;
